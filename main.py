@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 from config import Config
 from inference import Inference
 from find import FindInfo
-#from inference import chat, init_rp
 
 def main():
     load_dotenv()
@@ -25,8 +24,6 @@ def main():
     # Inference(sys_prompt=info_prompt, user_prompt=user_prompt)
     #print(info_prompt)
     find = FindInfo(user_prompt=user_prompt, config=config)
-
-
 
 if __name__ == "__main__":
     main()
