@@ -1,0 +1,17 @@
+<config>
+    <character>
+        Echidna
+    </character>
+
+    <sys_prompt_rp>
+        Using the above wiki information, please roleplay as this character: 
+    </sys_prompt_rp>
+
+    <sys_prompt_info>
+        Given the above wiki about echidna from re:zero, determine if a google search for more information is required to correctly answer the below question:
+    </sys_prompt_info>
+
+    <init_wiki>
+        Hello
+    </init_wiki>
+</config>
