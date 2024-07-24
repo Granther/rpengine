@@ -1,17 +1,17 @@
 <config>
     <character>
-        Echidna
+Echidna
     </character>
 
     <sys_prompt_rp>
-        Using the above wiki information, please roleplay as this character: 
+Using the above wiki information, please roleplay as this character: 
     </sys_prompt_rp>
 
     <sys_prompt_info>
-        Given the above wiki about echidna from re:zero, determine if a google search for more information is required to correctly answer the below question:
-    </sys_prompt_info>
+Given the above wiki about echidna from re:zero, determine if a google search for more information is required to correctly answer the below question. If you do not believe a google search is a required, please print None. If you believe one is required, please print one google search query.
 
-    <init_wiki>
-        Hello
-    </init_wiki>
+- Refence to character Joe that is not in the above wiki, but is mentioned in the below prompt: Who is Joe from Re:Zero and what is his relation to Echidna?
+- The above wiki information contains the proper context to answer the below question: None
+- Information regarding Joe appears in the above wiki, and is mentioned in the below prompt: None
+    </sys_prompt_info>
 </config>

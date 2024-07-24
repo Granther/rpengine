@@ -40,15 +40,18 @@ class Config:
         tree = ET.parse(self.configPath)
         root = tree.getroot()
 
-        sys_prompt_info = root[2].text
-        print(sys_prompt_info)
-        # sys_prompt_rp = root[1].text
-        # character = root[0].text
-        # init_wiki = root[].t`ext
+        self.sys_prompt_info = root[2].text
+        self.sys_prompt_rp = root[1].text
+        self.character = root[0].text
+        self.wiki_init = self.get_wiki_init()
 
     def find_config(self):
-        self.configPath = 'rp.xml'
-        #file = open(self.configPath, 'r')
+        self.configPath = "rp.xml"
+        self.wikiInitPath = "pre_data.txt"
+
+    def get_wiki_init(self):
+        with open(self.wikiInitPath, "rb") as f:
+            return f.read()
 
     def generate_config(self):
         try:
