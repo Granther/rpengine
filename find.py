@@ -16,16 +16,26 @@ class FindInfo:
 
         self.inference = Inference()
 
-        self.should_search()
+        #self.should_search()
+        self.generate_search_query()
 
     def should_search(self):
         # Ask model if the Wiki contains relavant information to answer query
         # If no, continue to search
         # If yes, return to main RP
 
-        eng = "Given the above wiki, simply, does the wiki have enough information to fully answer the below query? Yes or No"
+        eng = """Given the above wiki, simply, does the wiki have enough information to fully answer the below query? 
+        Answer: No
+        Answer: Yes
+        Asnwer: Yes
+        """
         sys_prompt_eng = f"{self.config.wiki_init}\n\n{eng}"
-        user_prompt_eng = f"Given the above wiki, simply, does the wiki have enough information to fully answer this query: {self.user_prompt}? Yes or No"
+        user_prompt_eng = f"""Given the above wiki, simply, does the wiki have enough information to fully answer this query: {self.user_prompt}? 
+        Answer: No
+        Answer: Yes
+        Asnwer: Yes
+        Asnwer:
+        """
 
         response = self.inference.infer(sys_prompt_eng, user_prompt_eng, self.model_name)
         response = re.sub('[.,:;?`~!*]', '', response.lower()).split()
@@ -42,12 +52,17 @@ class FindInfo:
     def generate_search_query(self):
         eng = """
             The wiki given above does not contain relvant information to answer the below query completely. Please formulate on google search to obtain relevant information.
-            Search: What is the birthday of Joe in the Glorptown TV show?
-            Search: How did emily from Friends meet Daniel?
-            Search: Why did louis choose to eat the large meal in episode 4 of louistown
             """
+        
+        eng = """Generate a google search to obtain missing information need to help answer the below query
+
+        
+        """
+        
         sys_prompt_eng = f"{self.config.wiki_init}\n\n{eng}"
         user_prompt_eng = f"{self.user_prompt}\nSearch:"
+
+        print(sys_prompt_eng, user_prompt_eng)
 
         response = self.inference.infer(sys_prompt_eng, user_prompt_eng, self.model_name)
 

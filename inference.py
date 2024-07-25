@@ -1,5 +1,6 @@
 import os
 from langchain_groq import ChatGroq
+from groq import Groq
 from langchain_core.messages import AIMessage, SystemMessage, HumanMessage
 from langchain import hub
 
@@ -37,15 +38,24 @@ def rag_inference(context: str = None, query: str = None, model: str = "llama3-8
 # with_message_history = RunnableWithMessageHistory(model, get_session_history)
 
 class Inference:
-    def __init__(self, sys_prompt: str = None, user_prompt: str = None, model_name: str = "gemma2-9b-it"):
-        self.model = ChatGroq(model=model_name)
-        self.sys_prompt = sys_prompt
-        self.user_prompt = user_prompt
+    def __init__(self):
+        pass
 
-    def infer(self):
-        messages = [
-            SystemMessage(content=self.sys_prompt),
-            HumanMessage(content=self.user_prompt),
-        ]
+    def infer(self, sys_prompt: str = None, user_prompt: str = None, model_name: str = "gemma2-9b-it"):
+        client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
-        return self.model.invoke(messages).content
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "system",
+                    "content": sys_prompt
+                },
+                {
+                    "role": "user",
+                    "content": user_prompt
+                }
+            ],
+            model=model_name,
+        )
+
+        return chat_completion.choices[0].message.content
