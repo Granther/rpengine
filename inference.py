@@ -22,14 +22,20 @@ class Inference:
         response = self.client.qna_search(search, search_depth="basic", topic="general")
         return response
     
+    def add_ctx(self, search: str):
+        prompt = self.char_data + "\n\n" + "Rephrase the below question to be about the above context. "
+        response = self.infer(sys_prompt=prompt, user_prompt=search)
+        return response
+
     def update_sys_prompt(self, user_prompt: str = None):
-        self.char_data += "\n" + self.generic_search(user_prompt)
+        self.char_data += "\n" + self.generic_search(self.add_ctx(user_prompt))
         self.sys_prompt = self.char_data + "\n\n" + self.rp_prompt
-        print(self.sys_prompt)
     
     # Generic inference, gotta handle sys prompt on the backend 
-    def infer(self, user_prompt: str = None, model_name: str = "gemma2-9b-it"):
+    def user_infer(self, user_prompt: str = None, model_name: str = "gemma2-9b-it"):
         self.update_sys_prompt(user_prompt)
+
+        print(self.sys_prompt)
 
         client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
@@ -38,6 +44,25 @@ class Inference:
                 {
                     "role": "system",
                     "content": self.sys_prompt
+                },
+                {
+                    "role": "user",
+                    "content": user_prompt
+                }
+            ],
+            model=model_name,
+        )
+
+        return chat_completion.choices[0].message.content
+
+    def infer(self, user_prompt: str = None, sys_prompt: str = None, model_name: str = "gemma2-9b-it"):
+        client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
+
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "system",
+                    "content": sys_prompt
                 },
                 {
                     "role": "user",

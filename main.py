@@ -17,13 +17,14 @@ def main():
 
     config = Config()
     user_prompt = input("Character: ")
+    user_prompt = "Echidna, the whitch of greed from the Anime Re:Zero"
     inference = Inference(user_prompt, config)
     print(inference.char_data)
 
     #input: str = None
     while input != "exit":
         user_input = input("Prompt: ")
-        print(inference.infer(user_input))
+        print(inference.user_infer(user_input))
 
 if __name__ == "__main__":
     main()
