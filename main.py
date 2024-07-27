@@ -16,14 +16,15 @@ def main():
     os.environ["GROQ_API_KEY"] = groq_key 
 
     config = Config()
-    user_prompt = input("Prompt: ")
-    #rp_prompt = f"{config.wiki_init} \n\n {config.sys_prompt_rp} {config.character} \n"
-    # #Inference(sys_prompt=rp_prompt, user_prompt=user_prompt)
-    # info_prompt = f"{config.wiki_init} \n {config.sys_prompt_info} \n"
-    # print(info_prompt)
-    # Inference(sys_prompt=info_prompt, user_prompt=user_prompt)
-    #print(info_prompt)
-    find = FindInfo(user_prompt=user_prompt, config=config)
+    user_prompt = input("Character: ")
+    inference = Inference(user_prompt, config)
+    print(inference.char_data)
+
+    #input: str = None
+    while input != "exit":
+        user_input = input("Prompt: ")
+        print(inference.infer(user_input))
 
 if __name__ == "__main__":
     main()
+

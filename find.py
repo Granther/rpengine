@@ -50,16 +50,17 @@ class FindInfo:
             return
 
     def generate_search_query(self):
-        eng = """
-            The wiki given above does not contain relvant information to answer the below query completely. Please formulate on google search to obtain relevant information.
-            """
-        
-        eng = """Generate a google search to obtain missing information need to help answer the below query
+        #eng = """Generate a google search to obtain missing information need to help answer the below query
 
-        
+        self.sys_prompt = """
+        We've been discussing the character Echidna from the series Re:Zero. The conversation started with a long block of text about Echidna's appearance, personality, history, abilities, and trivia. We didn't discuss Subaru's birthday yet, but we can go back to that question now.
+
+        To answer your question, Subaru's birthday is not mentioned in the provided text. If you need to know Subaru's birthday, I can try to find that information for you from other sources or by asking follow-up questions.
         """
+        eng = "Given the above summary for context, generate a descriptive, complete google search to help retrieve data missing from the above wiki from google, needed to help answer the below question:\n"
         
         sys_prompt_eng = f"{self.config.wiki_init}\n\n{eng}"
+        sys_prompt_eng = f"{self.sys_prompt}\n\n{eng}"
         user_prompt_eng = f"{self.user_prompt}\nSearch:"
 
         print(sys_prompt_eng, user_prompt_eng)
@@ -76,6 +77,20 @@ class FindInfo:
 
 if __name__ == "__main__":
     pass
+
+
+# Figure out if a search is needed
+
+# You are a data analyst, given the above wiki please decide wether further data gathering is necassary
+# Answer: No
+# Answer: Yes
+# Answer: Yes
+
+
+# Summarize missing info
+# Consruct google search
+# Appened to wiki
+
 
 
 

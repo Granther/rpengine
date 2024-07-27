@@ -1,54 +1,43 @@
 import os
-from langchain_groq import ChatGroq
+from tavily import TavilyClient
 from groq import Groq
-from langchain_core.messages import AIMessage, SystemMessage, HumanMessage
-from langchain import hub
-
-def rag_inference(context: str = None, query: str = None, model: str = "llama3-8b-8192"):
-    model = ChatGroq(model=model)
-    prompt = hub.pull("rlm/rag-prompt")
-
-    if query is None:
-        raise ValueError("'query' parameter is None, please set it to a string")
-
-    prompt_applied = prompt.invoke(
-        {"context": context, "question": query}
-    ).to_messages()
-
-    output = model.invoke(prompt_applied)
-
-    return output
-
-# from langchain_core.chat_history import (
-#     BaseChatMessageHistory,
-#     InMemoryChatMessageHistory,
-# )
-# from langchain_core.runnables.history import RunnableWithMessageHistory
-
-# store = {}
-
-# model = ChatGroq(model=model)
-
-# def get_session_history(session_id: str) -> BaseChatMessageHistory:
-#     if session_id not in store:
-#         store[session_id] = InMemoryChatMessageHistory()
-#     return store[session_id]
-
-
-# with_message_history = RunnableWithMessageHistory(model, get_session_history)
 
 class Inference:
-    def __init__(self):
-        pass
+    def __init__(self, character_prompt: str = None, config = None):
+        self.char_prompt = character_prompt
+        self.char_data = self.init_search()
+        self.config = config
+        self.rp_prompt = self.config.sys_prompt_rp 
 
-    def infer(self, sys_prompt: str = None, user_prompt: str = None, model_name: str = "gemma2-9b-it"):
+    # Perform original data scrape for RP prompt
+    def init_search(self):
+        self.client = TavilyClient(api_key=os.environ.get("TAVILY_API_KEY"))
+
+        char_prompt_eng = f"Tell me about {self.char_prompt}, in detail and depth"
+        char_data = self.client.qna_search(char_prompt_eng, search_depth="advance", topic="general")
+
+        return char_data
+    
+    def generic_search(self, search: str = None):
+        response = self.client.qna_search(search, search_depth="basic", topic="general")
+        return response
+    
+    def update_sys_prompt(self, user_prompt: str = None):
+        self.char_data += "\n" + self.generic_search(user_prompt)
+        self.sys_prompt = self.char_data + "\n\n" + self.rp_prompt
+        print(self.sys_prompt)
+    
+    # Generic inference, gotta handle sys prompt on the backend 
+    def infer(self, user_prompt: str = None, model_name: str = "gemma2-9b-it"):
+        self.update_sys_prompt(user_prompt)
+
         client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
         chat_completion = client.chat.completions.create(
             messages=[
                 {
                     "role": "system",
-                    "content": sys_prompt
+                    "content": self.sys_prompt
                 },
                 {
                     "role": "user",
