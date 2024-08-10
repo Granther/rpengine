@@ -22,7 +22,7 @@ class Inference:
 
     # Perform original data scrape for RP prompt
     def _init_search(self):
-        self.client = TavilyClient(api_key=os.environ.get("TAVILY_API_KEY"))
+        self.client = TavilyClient(api_key="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")
 
         char_prompt_eng = f"Tell me about {self.char_prompt}, in detail and depth"
         char_data = self.client.qna_search(char_prompt_eng, search_depth="advance", topic="general")

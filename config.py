@@ -1,35 +1,5 @@
 import configparser
 
-# class Config():
-#     """
-#     __init__
-#     Params:
-
-#     Returns:
-#     - Config object, for which we can access config vars from
-#     """
-#     def __init__(self):
-#         self.config = configparser.ConfigParser()
-#         self.config.read('config.conf')
-
-#         # Config does not exist yet
-#         if not self.config.sections(): 
-#             self.create_config()
-#             print("Created config")
-        
-#         self.model = self.config['General']['model']
-#         self.prompt = self.config['General']['prompt']
-#         self.system = self.config['General']['system']
-
-#     def create_config(self):    
-#         self.config['General'] = {'model': 'mixtral-8x7B-32768',
-#                                   'prompt': 'None',
-#                                   'system': 'None'}
-        
-#         with open('config.conf', 'w') as configfile:
-#             self.config.write(configfile)
-
-
 import xml.etree.ElementTree as ET
 class Config:
     def __init__(self):

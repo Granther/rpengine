@@ -1,11 +1,10 @@
-from groq import Groq
-import os
-import re
-from dotenv import load_dotenv
+from tavily import TavilyClient
 
-text = "Hello how are you?"
+# Step 1. Instantiating your TavilyClient
+tavily_client = TavilyClient(api_key="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")
 
-text = text
-text = re.sub("[.,:;?!]", "", text)
+# Step 2. Executing a simple search query
+response = tavily_client.search("Who is Leo Messi?")
 
-print(text)
+# Step 3. That's it! You've done a Tavily Search!
+print(response)

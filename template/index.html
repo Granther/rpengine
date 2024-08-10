@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with LLM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <form action="{{ url_for('build')}}" method="post" class="gen_form"> 
+        <fieldset class>
+            <label>Character Name</label> 
+            <input name="character" id="character" size="50" placeholder="Pheobe from Friends">
+            <button type="submit">Submit</button>  
+        </fieldset>
+    </form>
+</body>
+</html>
